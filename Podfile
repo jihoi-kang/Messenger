@@ -14,4 +14,7 @@ target 'Messenger' do
   #Faceboook
   pod 'FBSDKLoginKit'
 
+  #Google Sign in
+  pod 'GoogleSignIn'
+
 end
