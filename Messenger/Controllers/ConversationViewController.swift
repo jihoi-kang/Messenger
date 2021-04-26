@@ -10,6 +10,11 @@ import FirebaseAuth
 
 class ConversationViewController: UIViewController {
 
+    private let tableView: UITableView = {
+        let table = UITableView()
+        return table
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
