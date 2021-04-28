@@ -208,19 +208,39 @@ class RegisterViewController: UIViewController {
                 return
             }
             
-            FirebaseAuth.Auth.auth().createUser(withEmail: email,
-                                                password: password,
-                                                completion: { authResult, error in
-                                                    guard authResult != nil, error == nil else {
-                                                        print("Error createing user")
-                                                        return
-                                                    }
-                                                    
-                                                    DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName,
-                                                                                                        lastName: lastName,
-                                                                                                        emailAddress: email))
-                                                    strongSelf.navigationController?.dismiss(animated: true, completion: nil)
-                                                })
+            FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { authResult, error in
+                guard authResult != nil, error == nil else {
+                    print("Error createing user")
+                    return
+                }
+                
+                let chatUser = ChatAppUser(firstName: firstName,
+                                           lastName: lastName,
+                                           emailAddress: email)
+                
+                DatabaseManager.shared.insertUser(with: chatUser, completion: { success in
+                    if success {
+                        // Upload image
+                        guard let image = strongSelf.imageView.image,
+                              let data = image.pngData() else {
+                            return
+                        }
+                        
+                        let fileName = chatUser.profilePictureFileName
+                        
+                        StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
+                            switch result {
+                            case .success(let downloadUrl):
+                                UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                                print(downloadUrl)
+                            case .failure(let error):
+                                print("Storage manager error: \(error)")
+                            }
+                        })
+                    }
+                })
+                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            })
         })
     }
     
