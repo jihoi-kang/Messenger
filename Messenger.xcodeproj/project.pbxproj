@@ -12,6 +12,7 @@
 		E20A26DF2633CCF3000029D7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20A26DE2633CCF3000029D7 /* DatabaseManager.swift */; };
 		E20A27952636DFE6000029D7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20A27942636DFE6000029D7 /* ChatViewController.swift */; };
 		E20A27D026397B94000029D7 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20A27CF26397B94000029D7 /* StorageManager.swift */; };
+		E20A27EF26440F6A000029D7 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20A27EE26440F6A000029D7 /* ConversationTableViewCell.swift */; };
 		E2A5DA2A263329E30048C92A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A5DA29263329E30048C92A /* AppDelegate.swift */; };
 		E2A5DA2C263329E30048C92A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A5DA2B263329E30048C92A /* SceneDelegate.swift */; };
 		E2A5DA2E263329E30048C92A /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A5DA2D263329E30048C92A /* ConversationViewController.swift */; };
@@ -35,6 +36,7 @@
 		E20A26DE2633CCF3000029D7 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		E20A27942636DFE6000029D7 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		E20A27CF26397B94000029D7 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		E20A27EE26440F6A000029D7 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		E2A5DA26263329E30048C92A /* Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Messenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2A5DA29263329E30048C92A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2A5DA2B263329E30048C92A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 			children = (
 				E2A5DA4326332B180048C92A /* Storyboards */,
 				E2A5DA32263329E60048C92A /* Assets.xcassets */,
+				E20A27EE26440F6A000029D7 /* ConversationTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				E2A5DA2A263329E30048C92A /* AppDelegate.swift in Sources */,
 				E2A5DA5526332C610048C92A /* ProfileViewController.swift in Sources */,
 				E2A5DA2C263329E30048C92A /* SceneDelegate.swift in Sources */,
+				E20A27EF26440F6A000029D7 /* ConversationTableViewCell.swift in Sources */,
 				E20A27952636DFE6000029D7 /* ChatViewController.swift in Sources */,
 				E2A5DA4C26332C220048C92A /* PhotoViewerViewController.swift in Sources */,
 				E20A27D026397B94000029D7 /* StorageManager.swift in Sources */,
