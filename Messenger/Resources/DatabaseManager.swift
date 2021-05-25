@@ -152,7 +152,7 @@ extension DatabaseManager {
      [
      "conversation_id": ..,
      "other_user_email": ..,
-     "lastest_message": {
+     "latest_message": {
      "date": ...,
      "latest_message": ...,
      "is_read": bool
@@ -210,7 +210,7 @@ extension DatabaseManager {
                 "id": conversationId,
                 "other_user_email": otherUserEmail,
                 "name": name,
-                "lastest_message": [
+                "latest_message": [
                     "date": dateString,
                     "message": message,
                     "is_read": false
@@ -221,7 +221,7 @@ extension DatabaseManager {
                 "id": conversationId,
                 "other_user_email": safeEmail,
                 "name": currentName,
-                "lastest_message": [
+                "latest_message": [
                     "date": dateString,
                     "message": message,
                     "is_read": false
@@ -362,10 +362,10 @@ extension DatabaseManager {
                 guard let conversationId = dictionary["id"] as? String,
                       let name = dictionary["name"] as? String,
                       let otherUserEmail = dictionary["other_user_email"] as? String,
-                      let lastestMessage = dictionary["lastest_message"] as? [String: Any],
-                      let date = lastestMessage["date"] as? String,
-                      let message = lastestMessage["message"] as? String,
-                      let isRead = lastestMessage["is_read"] as? Bool else {
+                      let latestMessage = dictionary["latest_message"] as? [String: Any],
+                      let date = latestMessage["date"] as? String,
+                      let message = latestMessage["message"] as? String,
+                      let isRead = latestMessage["is_read"] as? Bool else {
                     print("Wrong value fetched.")
                     return nil
                 }
@@ -393,14 +393,13 @@ extension DatabaseManager {
             
             let messages: [Message] = value.compactMap({ dictionary in
                 guard let name = dictionary["name"] as? String,
-                      let isRead = dictionary["is_read"] as? Bool,
+                      let _ = dictionary["is_read"] as? Bool,
                       let messageId = dictionary["id"] as? String,
                       let content = dictionary["content"] as? String,
                       let senderEmail = dictionary["sender_email"] as? String,
-                      let type = dictionary["type"] as? String,
+                      let _ = dictionary["type"] as? String,
                       let dateString = dictionary["date"] as? String,
                       let date = ChatViewController.dateFormatter.date(from: dateString) else {
-                    // todo("dateString에서 date로 포멧 변경 불가능함. Need to fix")
                     return nil
                 }
                 
@@ -419,10 +418,18 @@ extension DatabaseManager {
     }
     
     // Sends a message with target conversation and messsage
-    public func sendMessage(to conversation: String, name: String, newMessage: Message, completion: @escaping (Bool) -> Void) {
+    public func sendMessage(to conversation: String, otherUserEmail: String, name: String, newMessage: Message, completion: @escaping (Bool) -> Void) {
         // add new message to messages
         // Update sender latest message
         // Update recipient latest message
+        
+        guard let myEmail = UserDefaults.standard.value(forKey: "email") as? String else {
+            completion(false)
+            return
+        }
+        
+        let currentEmail = DatabaseManager.safeEmail(emailAddress: myEmail)
+        
         database.child("\(conversation)/messages").observeSingleEvent(of: .value, with: { [weak self] snapshot in
             guard let strongSelf = self else {
                 return
@@ -483,7 +490,87 @@ extension DatabaseManager {
                     completion(false)
                     return
                 }
-                completion(true)
+                
+                strongSelf.database.child("\(currentEmail)/conversations").observeSingleEvent(of: .value, with: { snapshot in
+                    guard var currentUserConversations = snapshot.value as? [[String: Any]] else {
+                        completion(false)
+                        return
+                    }
+                    
+                    let updatedValue: [String: Any] = [
+                        "date": dateString,
+                        "is_read": false,
+                        "message": message
+                    ]
+                    
+                    var targetConversation: [String: Any]?
+                    
+                    var position = 0
+                    
+                    for conversationDictionary in currentUserConversations {
+                        if let currentId = conversationDictionary["id"] as? String, currentId == conversation {
+                            targetConversation = conversationDictionary
+                            break
+                        }
+                        
+                        position += 1
+                    }
+                    
+                    targetConversation?["latest_message"] = updatedValue
+                    guard let finalConversation = targetConversation else {
+                        completion(false)
+                        return
+                    }
+                    currentUserConversations[position] = finalConversation
+                    strongSelf.database.child("\(currentEmail)/conversations").setValue(currentUserConversations, withCompletionBlock: { error, _ in
+                        guard error == nil else {
+                            completion(false)
+                            return
+                        }
+                        
+                        // Update latest message for recipient user
+                        strongSelf.database.child("\(otherUserEmail)/conversations").observeSingleEvent(of: .value, with: { snapshot in
+                            guard var othertUserConversations = snapshot.value as? [[String: Any]] else {
+                                completion(false)
+                                return
+                            }
+                            
+                            let updatedValue: [String: Any] = [
+                                "date": dateString,
+                                "is_read": false,
+                                "message": message
+                            ]
+                            
+                            var targetConversation: [String: Any]?
+                            
+                            var position = 0
+                            
+                            for conversationDictionary in othertUserConversations {
+                                if let currentId = conversationDictionary["id"] as? String, currentId == conversation {
+                                    targetConversation = conversationDictionary
+                                    break
+                                }
+                                
+                                position += 1
+                            }
+                            
+                            targetConversation?["latest_message"] = updatedValue
+                            guard let finalConversation = targetConversation else {
+                                completion(false)
+                                return
+                            }
+                            othertUserConversations[position] = finalConversation
+                            strongSelf.database.child("\(otherUserEmail)/conversations").setValue(othertUserConversations, withCompletionBlock: { error, _ in
+                                guard error == nil else {
+                                    completion(false)
+                                    return
+                                }
+                                
+                                completion(true)
+                            })
+                        })
+                    })
+                })
             }
         })
     }
