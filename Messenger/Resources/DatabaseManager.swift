@@ -398,9 +398,8 @@ extension DatabaseManager {
                       let content = dictionary["content"] as? String,
                       let senderEmail = dictionary["sender_email"] as? String,
                       let type = dictionary["type"] as? String,
-                      let dateString = dictionary["date"] as? String
-//                      let date = ChatViewController.dateFormatter.date(from: dateString)
-                else {
+                      let dateString = dictionary["date"] as? String,
+                      let date = ChatViewController.dateFormatter.date(from: dateString) else {
                     // todo("dateString에서 date로 포멧 변경 불가능함. Need to fix")
                     return nil
                 }
@@ -411,7 +410,7 @@ extension DatabaseManager {
                 
                 return Message(sender: sender,
                                messageId: messageId,
-                               sentDate: Date(),
+                               sentDate: date,
                                kind: .text(content))
             })
             
