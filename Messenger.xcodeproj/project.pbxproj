@@ -27,6 +27,7 @@
 		E2A5DA5226332C480048C92A /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A5DA5126332C480048C92A /* NewConversationViewController.swift */; };
 		E2A5DA5526332C610048C92A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A5DA5426332C610048C92A /* ProfileViewController.swift */; };
 		E2A5DA5A2633B1040048C92A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A5DA592633B1040048C92A /* Extensions.swift */; };
+		E2C7F3B72678C746005D3B5D /* LocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C7F3B62678C746005D3B5D /* LocationPickerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		E2A5DA5126332C480048C92A /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		E2A5DA5426332C610048C92A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E2A5DA592633B1040048C92A /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		E2C7F3B62678C746005D3B5D /* LocationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 				E2A5DA4E26332C2B0048C92A /* VideoPlayerViewController.swift */,
 				E2A5DA5126332C480048C92A /* NewConversationViewController.swift */,
 				E2A5DA5426332C610048C92A /* ProfileViewController.swift */,
+				E2C7F3B62678C746005D3B5D /* LocationPickerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				E20A27952636DFE6000029D7 /* ChatViewController.swift in Sources */,
 				E2A5DA4C26332C220048C92A /* PhotoViewerViewController.swift in Sources */,
 				E20A27D026397B94000029D7 /* StorageManager.swift in Sources */,
+				E2C7F3B72678C746005D3B5D /* LocationPickerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
