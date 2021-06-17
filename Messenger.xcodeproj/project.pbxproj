@@ -110,8 +110,6 @@
 			children = (
 				E2213714266F3F860039829D /* GoogleService-Info.plist */,
 				E2A5DA4226332AF30048C92A /* Resources */,
-				E2A5DA4126332AED0048C92A /* ViewModels */,
-				E2A5DA4026332AE90048C92A /* Models */,
 				E2A5DA3F26332AE40048C92A /* Views */,
 				E2A5DA3E26332AD90048C92A /* Controllers */,
 				E2A5DA37263329E60048C92A /* Info.plist */,
@@ -143,20 +141,6 @@
 				E2213716266F40220039829D /* NewConversationCell.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		E2A5DA4026332AE90048C92A /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		E2A5DA4126332AED0048C92A /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		E2A5DA4226332AF30048C92A /* Resources */ = {
