@@ -56,7 +56,6 @@ class ConversationViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(noConversationLabel)
         setupTableView()
-        fetchConversations()
         startListenerForConversations()
         
         loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main, using: { [weak self] _ in
@@ -86,14 +85,21 @@ class ConversationViewController: UIViewController {
             case .success(let conversations):
                 print("successfully got conversation models \(conversations)")
                 guard !conversations.isEmpty else {
+                    self?.tableView.isHidden = true
+                    self?.noConversationLabel.isHidden = false
                     return
                 }
+                
+                self?.noConversationLabel.isHidden = true
+                self?.tableView.isHidden = false
                 self?.conversations = conversations
                 
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
                 }
             case .failure(let error):
+                self?.tableView.isHidden = true
+                self?.noConversationLabel.isHidden = false
                 print("failed to get conversations: \(error)")
             }
         })
@@ -154,6 +160,10 @@ class ConversationViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
+        noConversationLabel.frame = CGRect(x: 10,
+                                           y: (view.height - 100) / 2,
+                                           width: view.width - 20,
+                                           height: 100)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -174,10 +184,6 @@ class ConversationViewController: UIViewController {
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-    }
-    
-    private func fetchConversations() {
-        tableView.isHidden = false
     }
 
 }

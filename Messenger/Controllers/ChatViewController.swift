@@ -79,7 +79,7 @@ class ChatViewController: MessagesViewController {
     }()
     
     public let otherUserEmail: String
-    private let conversationId: String?
+    private var conversationId: String?
     public var isNewConversation = false
     
     private var messages = [Message]()
@@ -102,7 +102,7 @@ class ChatViewController: MessagesViewController {
         super.init(nibName: nil, bundle: nil)
         
         if let conversationId = conversationId {
-            listenForMessasges(id: conversationId)
+            listenForMessages(id: conversationId, shouldScrollToBottom: true)
         }
     }
     
@@ -243,7 +243,7 @@ class ChatViewController: MessagesViewController {
         present(actionSheet, animated: true)
     }
     
-    private func listenForMessasges(id: String) {
+    private func listenForMessages(id: String, shouldScrollToBottom: Bool) {
         DatabaseManager.shared.getAllMessagesForConversation(with: id, completion: { [weak self] result in
             switch result {
             case .success(let messages):
@@ -255,6 +255,10 @@ class ChatViewController: MessagesViewController {
                 self?.messages = messages
                 DispatchQueue.main.async {
                     self?.messagesCollectionView.reloadDataAndKeepOffset()
+                    
+                    if shouldScrollToBottom {
+                        self?.messagesCollectionView.scrollToLastItem()
+                    }
                 }
             case .failure(let error):
                 print("failed to get messages: \(error)")
@@ -292,6 +296,11 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                 if success {
                     print("message sent")
                     self?.isNewConversation = false
+                    
+                    let newConversationId = "conversation_\(message.messageId)"
+                    self?.conversationId = newConversationId
+                    self?.listenForMessages(id: newConversationId, shouldScrollToBottom: true)
+                    self?.messageInputBar.inputTextView.text = nil
                 } else {
                     print("failed to send")
                 }
@@ -301,8 +310,9 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                 return
             }
             // append to existing conversation data
-            DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: otherUserEmail, name: name, newMessage: message, completion: { success in
+            DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: otherUserEmail, name: name, newMessage: message, completion: { [weak self] success in
                 if success {
+                    self?.messageInputBar.inputTextView.text = nil
                     print("message sent")
                 } else {
                     print("failed to send")
